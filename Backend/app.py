@@ -1,5 +1,4 @@
 import json
-from pickletools import TAKEN_FROM_ARGUMENT4U
 import sqlite3
 from tokenize import group
 from helper import MatchResult, TeamInfo, Ranking, parse_match_result, parse_team_info, team_won, team_lose, team_draw
@@ -123,78 +122,46 @@ def get_ranking():
         'SELECT teamA, scoreA, teamB, scoreB FROM matchResult').fetchall()
     conn.close()
 
-    # group
+    # Extract this function into another class
 
-    # GROUP_RANKING IS VERY NESTED AND SEEMED HARD TO FOLLOW/MAINTAIN FOR OTHER USERS
-    # GROUP_RANKING = {GROUP1: {RANKINGS FOR GROUP 1},
-    #                   GROUP2: {RANKINGS FOR GROUP 2}}
-    group_ranking = {}
+    team_ranking = {}
 
     # Populate the team_ranking first
     for team_info in db_team_info:
         temp = Ranking(0, 0, 0, team_info[1], team_info[2])
-        # team_ranking[team_info[0]] = temp
-        if not team_info[2] in group_ranking:
-            group_ranking[team_info[2]] = {}
+        team_ranking[team_info[0]] = temp
 
-        group_ranking[team_info[2]][team_info[0]] = temp
-
-    print(group_ranking)
-
-    # for group_number, team_ranking in group_ranking.items():
     # Populate the remaining attributes
     for result in db_result:
-         teamA = result[0]
-          teamB = result[2]
+        teamA = result[0]
+        teamB = result[2]
 
-           # if result[1] > result[3]:
-           #     # Team A won
-           #     team_ranking[teamA] = team_won(team_ranking[teamA], result[1])
-           #     team_ranking[teamB] = team_lose(team_ranking[teamB], result[3])
+        if result[1] > result[3]:
+            # Team A won
+            team_ranking[teamA] = team_won(team_ranking[teamA], result[1])
+            team_ranking[teamB] = team_lose(team_ranking[teamB], result[3])
 
-           # elif result[3] > result[1]:
-           #     # Team B won
-           #     team_ranking[teamA] = team_lose(team_ranking[teamA], result[1])
-           #     team_ranking[teamB] = team_won(team_ranking[teamB], result[3])
+        elif result[3] > result[1]:
+            # Team B won
+            team_ranking[teamA] = team_lose(team_ranking[teamA], result[1])
+            team_ranking[teamB] = team_won(team_ranking[teamB], result[3])
 
-           # else:
-           #     # Draw
-           #     team_ranking[teamA] = team_draw(team_ranking[teamA], result[1])
-           #     team_ranking[teamB] = team_draw(team_ranking[teamB], result[3])
+        else:
+            # Draw
+            team_ranking[teamA] = team_draw(team_ranking[teamA], result[1])
+            team_ranking[teamB] = team_draw(team_ranking[teamB], result[3])
 
-           if result[1] > result[3]:
-                # Team A won
-                print("\nTeamA is: ", teamA, " TeamB is: ", teamB)
-                print(group_ranking[group_number][teamA])
-                print("Finish\n")
+    group_ranking = {}
+    # Populate the ranking by group first
+    for team_name, rank in team_ranking.items():
+        if not rank.groupNumber in group_ranking:
+            group_ranking[rank.groupNumber] = {}
 
-                # VERY COMPLEX NESTINGS
-                group_ranking[group_number][teamA] = team_won(
-                    team_ranking[teamA], result[1])
-                group_ranking[group_number][teamB] = team_lose(
-                    team_ranking[teamB], result[3])
+        group_ranking[rank.groupNumber][team_name] = rank
 
-            elif result[3] > result[1]:
-                # Team B won
-                group_ranking[group_number][teamA] = team_lose(
-                    team_ranking[teamA], result[1])
-                group_ranking[group_number][teamB] = team_won(
-                    team_ranking[teamB], result[3])
-
-            else:
-                # Draw
-                group_ranking[group_number][teamA] = team_draw(
-                    team_ranking[teamA], result[1])
-                group_ranking[group_number][teamB] = team_draw(
-                    team_ranking[teamB], result[3])
-
-        # group_ranking = {}
-        # # Populate the ranking by group first
-        # for rank in team_ranking:
-        #     # check if exist in dict, add
-
-        #     # For each ranking group, sort by
-
-        #     # Sort each group by score, totalGoals, alternateMatchPoint, then reg date
+    for group_number, rank in group_ranking.items():
+        # rank is a dictionary of the teams in this grouping
+        # Sort each group by score, totalGoals, alternateMatchPoint, then reg date
+        print(rank)
 
     return jsonify(group_ranking), 200
