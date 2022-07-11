@@ -1,16 +1,17 @@
-DROP TABLE IF EXISTS teamInfo, matchResult;
+DROP TABLE IF EXISTS teamInfo;
+DROP TABLE IF EXISTS matchResult;
 
 CREATE TABLE teamInfo (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
     teamName TEXT NOT NULL,
-    registrationDate DATE NOT NULL,
+    registrationDate TEXT NOT NULL,
     groupNumber INTEGER NOT NULL,
+    PRIMARY KEY (teamName, registrationDate)
 );
 
-CREATE TABLE atchResult (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE matchResult (
     teamA TEXT NOT NULL,
     scoreA INTEGER NOT NULL,
-    teamA TEXT NOT NULL,
+    teamB TEXT NOT NULL,
     scoreB INTEGER NOT NULL,
+    PRIMARY KEY (teamA, scoreA, teamB, scoreB)
 );

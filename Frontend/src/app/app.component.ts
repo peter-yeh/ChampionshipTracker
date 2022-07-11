@@ -12,12 +12,10 @@ export class AppComponent {
   constructor(private apiService: ApiService) { }
 
   title: string = 'Frontend';
-  inputString: string = '';
+  inputString: string = ``;
 
   teamInfoSubs: Subscription = Subscription.EMPTY
   teamInformationArr: TeamInfo[] = [];
-
-
 
   onInputChange(event: any) {
     if (!(event.target.value as string)) {
@@ -35,11 +33,20 @@ export class AppComponent {
     this.teamInfoSubs = this.apiService
       .addTeamInfo(this.inputString)
       .subscribe(res => {
-        this.teamInformationArr = res;
+        this.castToTeamInfo(res);
       },
         console.error
       );
     // show toast message for success
+  }
+
+  castToTeamInfo(anyArr: any[]) {
+    const teamInfoArr = [];
+    for (let i = 0; i < anyArr.length; i++) {
+      const teamInfo: TeamInfo = new TeamInfo(anyArr[i][0], anyArr[i][1], anyArr[i][2]);
+      teamInfoArr.push(teamInfo);
+    }
+    this.teamInformationArr = teamInfoArr;
   }
 
 }
