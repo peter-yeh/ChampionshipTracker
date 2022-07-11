@@ -16,6 +16,15 @@ class MatchResult(NamedTuple):
     scoreB: int
 
 
+class Ranking(NamedTuple):
+    """Ranking type, for easier access instead of using arbitrary index"""
+    score: int
+    totalGoals: int
+    alternateMatchPoint: int
+    regDate: str
+    groupNumber: int
+
+
 def parse_team_info(user_input):
     """Parse input based on this format
     firstTeam 17/05 2
@@ -52,7 +61,26 @@ def parse_match_result(user_input):
             continue
 
         match_result = MatchResult(
-            split_by_space[0], split_by_space[1], split_by_space[2], split_by_space[3])
+            split_by_space[0], split_by_space[2], split_by_space[1], split_by_space[3])
         match_result_arr.append(match_result)
 
     return match_result_arr
+
+
+def compare_date(dateA, dateB):
+    dateA.split()
+
+
+def team_won(rank, goals):
+    return Ranking(rank.score + 3, rank.totalGoals + goals,
+                   rank.alternateMatchPoint + 5, rank.regDate, rank.groupNumber)
+
+
+def team_lose(rank, goals):
+    return Ranking(rank.score, rank.totalGoals + goals,
+                   rank.alternateMatchPoint + 1, rank.regDate, rank.groupNumber)
+
+
+def team_draw(rank, goals):
+    return Ranking(rank.score + 1, rank.totalGoals + goals,
+                   rank.alternateMatchPoint + 3, rank.regDate, rank.groupNumber)
