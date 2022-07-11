@@ -18,6 +18,6 @@ flask run
 
 Helpful commands
 ```
-pip install flask smth...
+pip install <Package Name>
 pip freeze > requirements.txt
 ```

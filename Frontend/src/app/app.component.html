@@ -2,16 +2,17 @@
 
   <div class="textField">
     <h3>Please Enter the Team information</h3>
-    <input class="input" matInput type="text" matInput (input)="onInputChange($event)"
-      placeholder="TeamName RegistrationDate GroupNumber">
-    <button class="button" mat-raised-button (click)="onClick()">Enter</button>
+    <textarea class="input" matInput type="text" matInput (input)="onInputChangeInfoField($event)"
+      placeholder="TeamName RegistrationDate GroupNumber" row="9" multiline></textarea>
+
+    <button class="button" mat-raised-button (click)="onClickInfoBtn()">Enter</button>
   </div>
 
   <div class="textField">
-    <h3>Please Enter the Team score</h3>
-    <textarea class="input" matInput type="text" matInput (input)="onInputChange($event)"
+    <h3>Please Enter the Match score</h3>
+    <textarea class="input" matInput type="text" matInput (input)="onInputChangeResultField($event)"
       placeholder="TeamNameA TeamNameB TeamAScore TeamBScore" row="9" multiline></textarea>
-    <button class="button" mat-raised-button (click)="onClick()">Enter</button>
+    <button class="button" mat-raised-button (click)="onClickResultBtn()">Enter</button>
   </div>
 
   <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
