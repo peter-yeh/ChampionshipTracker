@@ -1,41 +1,76 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ApiService} from 'src/model/api.service';
-import {MatchResult, TeamInfo} from 'src/model/model';
+import {GroupRank, MatchResult, TeamInfo} from 'src/model/model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   constructor(private apiService: ApiService) { }
 
   title: string = 'Frontend';
 
-  inputStringInfoField: string = ``;
+  infoField: string = ``;
   teamInfoSubs: Subscription = Subscription.EMPTY;
-  teamInformationArr: TeamInfo[] = [];
+  teamInfoArr: TeamInfo[] = [];
 
-  inputStringResultField: string = ``;
+  resultField: string = ``;
   matchResultSubs: Subscription = Subscription.EMPTY;
   matchResultArr: MatchResult[] = [];
 
-  onInputChangeInfoField(event: any) {
+  rankingSubs: Subscription = Subscription.EMPTY;
+  groupRankArr: GroupRank[] = [];
+
+  ngOnInit() {
+    this.teamInfoSubs = this.apiService
+        .getTeamInfo()
+        .subscribe((res) => {
+          this.castToTeamInfo(res);
+        },
+        console.error,
+        );
+    this.matchResultSubs = this.apiService
+        .getMatchResult()
+        .subscribe((res) => {
+          this.castToMatchResult(res);
+        },
+        console.error,
+        );
+    this.rankingSubs = this.apiService
+        .getRanking()
+        .subscribe((res) => {
+          this.castToGroupRank(res);
+          console.log(this.groupRankArr);
+        },
+        console.error,
+        );
+  }
+
+  ngOnDestroy() {
+    this.teamInfoSubs.unsubscribe();
+    this.matchResultSubs.unsubscribe();
+    this.rankingSubs.unsubscribe();
+  }
+
+
+  changeInfoField(event: any) {
     if (!(event.target.value as string)) {
       // show toast message if no input
       return;
     }
-    this.inputStringInfoField = event.target.value as string;
+    this.infoField = event.target.value as string;
   }
 
-  onClickInfoBtn() {
-    if (!this.inputStringInfoField) {
+  onClickInfo() {
+    if (!this.infoField) {
       // can show toast message if no input
       return;
     }
     this.teamInfoSubs = this.apiService
-        .addTeamInfo(this.inputStringInfoField)
+        .addTeamInfo(this.infoField)
         .subscribe((res) => {
           this.castToTeamInfo(res);
         },
@@ -44,27 +79,31 @@ export class AppComponent {
     // show toast message for success
   }
 
-  onInputChangeResultField(event: any) {
+  changeResultField(event: any) {
     if (!(event.target.value as string)) {
       // show toast message if no input
       return;
     }
-    this.inputStringResultField = event.target.value as string;
+    this.resultField = event.target.value as string;
   }
 
-  onClickResultBtn() {
-    if (!this.inputStringResultField) {
+  onClickResult() {
+    if (!this.resultField) {
       // can show toast message if no input
       return;
     }
     this.matchResultSubs = this.apiService
-        .addMatchResult(this.inputStringResultField)
+        .addMatchResult(this.resultField)
         .subscribe((res) => {
           this.castToTeamInfo(res);
         },
         console.error,
         );
     // show toast message for success
+  }
+
+  onClickClearDb() {
+
   }
 
   castToTeamInfo(anyArr: any[]) {
@@ -73,7 +112,7 @@ export class AppComponent {
       const teamInfo: TeamInfo = new TeamInfo(anyArr[i][0], anyArr[i][1], anyArr[i][2]);
       temp.push(teamInfo);
     }
-    this.teamInformationArr = temp;
+    this.teamInfoArr = temp;
   }
 
   castToMatchResult(anyArr: any[]) {
@@ -84,5 +123,14 @@ export class AppComponent {
       temp.push(matchResult);
     }
     this.matchResultArr = temp;
+  }
+
+  castToGroupRank(anyArr: any[]) {
+    const temp = [];
+    for (const [key, value] of Object.entries(anyArr)) {
+      const rank = new GroupRank(key, value);
+      temp.push(rank);
+    }
+    this.groupRankArr = temp;
   }
 }

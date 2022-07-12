@@ -14,3 +14,10 @@ export class MatchResult {
     public scoreB: number,
   ) { }
 }
+
+export class GroupRank {
+  constructor(
+    public name: string,
+    public rank: any[],
+  ) { }
+}

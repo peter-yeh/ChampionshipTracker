@@ -1,0 +1,46 @@
+Team information:
+teamA 01/04 1
+teamB 02/05 2
+teamC 03/06 1
+teamD 04/06 2
+teamE 05/06 2
+teamF 15/06 1
+teamG 14/06 2
+teamH 13/06 1
+teamI 12/06 1
+teamJ 11/06 2
+teamK 10/06 1
+teamL 27/06 2
+
+
+Match results:
+teamA teamC 3 3
+teamA teamF 4 4
+teamA teamH 1 1
+teamA teamI 3 3
+teamA teamK 0 0
+teamB teamD 2 1
+teamB teamE 3 2
+teamB teamG 8 8
+teamB teamJ 1 3
+teamB teamL 0 0
+teamC teamF 3 1
+teamC teamH 1 3
+teamC teamI 3 3
+teamC teamK 1 3
+teamD teamE 1 2
+teamD teamG 2 1
+teamD teamJ 1 4
+teamD teamL 4 4
+teamE teamG 0 2
+teamE teamJ 4 3
+teamE teamL 2 2
+teamF teamH 1 3
+teamF teamI 2 4
+teamF teamK 3 4
+teamG teamJ 0 2
+teamG teamL 3 3
+teamH teamI 0 0
+teamH teamK 3 2
+teamI teamK 0 3
+teamJ teamL 4 4

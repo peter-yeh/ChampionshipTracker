@@ -1,19 +1,94 @@
 <div>
 
   <div class="textField">
+  <button class="button" mat-raised-button (click)="onClickClearDb()">Clear Database</button>
     <h3>Please Enter the Team information</h3>
-    <textarea class="input" matInput type="text" (input)="onInputChangeInfoField($event)"
+    <textarea class="input" matInput type="text" (input)="changeInfoField($event)"
       placeholder="TeamName RegistrationDate GroupNumber" row="9" multiline></textarea>
 
-    <button class="button" mat-raised-button (click)="onClickInfoBtn()">Enter</button>
+    <button class="button" mat-raised-button (click)="onClickInfo()">Enter</button>
   </div>
+
+  <h4>Team Information</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Team Name</th>
+        <th scope="col">Registration Date</th>
+        <th scope="col">Group Number</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let team of teamInfoArr">
+      <tr>
+        <td>{{ team.name }}</td>
+        <td>{{ team.regDate }}</td>
+        <td>{{ team.groupNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br>
+  <br>
+  <br>
+  <br>
 
   <div class="textField">
     <h3>Please Enter the Match score</h3>
-    <textarea class="input" matInput type="text" (input)="onInputChangeResultField($event)"
+    <textarea class="input" matInput type="text" (input)="changeResultField($event)"
       placeholder="TeamNameA TeamNameB TeamAScore TeamBScore" row="9" multiline></textarea>
-    <button class="button" mat-raised-button (click)="onClickResultBtn()">Enter</button>
+    <button class="button" mat-raised-button (click)="onClickResult()">Enter</button>
   </div>
+
+  <h4>Team Information</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Team A</th>
+        <th scope="col">Score</th>
+        <th scope="col">Team B</th>
+        <th scope="col">Score</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let result of matchResultArr">
+      <tr>
+        <td>{{ result.teamA }}</td>
+        <td>{{ result.scoreA }}</td>
+        <td>{{ result.teamB }}</td>
+        <td>{{ result.scoreB }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <h2>Ranking</h2>
+  <div *ngFor="let group of groupRankArr">
+    <h4>Group {{group.name}}</h4>
+    
+      <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Rank</th>
+          <th scope="col">Team Name</th>
+          <th scope="col">Score</th>
+          <th scope="col">Total Goals</th>
+          <th scope="col">Alternate Match Point</th>
+          <th scope="col">Registration Date</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let team of group.rank; let i = index">
+        <tr>
+          <td>{{ i + 1}}</td>
+          <td>{{ team[0] }}</td>
+          <td>{{ team[1][0] }}</td>
+          <td>{{ team[1][1] }}</td>
+          <td>{{ team[1][2] }}</td>
+          <td>{{ team[1][3] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div >
+
 
   <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
     <title>Gray Clouds Background</title>
