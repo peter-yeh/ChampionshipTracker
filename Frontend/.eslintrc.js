@@ -1,25 +1,25 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
   },
   extends: [
-    'standard'
+    'google',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: [
-    '@typescript-eslint'
+    '@typescript-eslint',
   ],
   rules: {
     'require-jsdoc': 0,
     'new-cap': 0,
     'max-len': ['error', 100, {
       ignorePattern: '^import\\s.+\\sfrom\\s.+;$',
-      ignoreUrls: true
-    }]
-  }
-}
+      ignoreUrls: true,
+    }],
+  },
+};
