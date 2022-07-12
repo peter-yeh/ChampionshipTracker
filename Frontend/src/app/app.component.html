@@ -2,7 +2,7 @@
 
   <div class="textField">
     <h3>Please Enter the Team information</h3>
-    <textarea class="input" matInput type="text" matInput (input)="onInputChangeInfoField($event)"
+    <textarea class="input" matInput type="text" (input)="onInputChangeInfoField($event)"
       placeholder="TeamName RegistrationDate GroupNumber" row="9" multiline></textarea>
 
     <button class="button" mat-raised-button (click)="onClickInfoBtn()">Enter</button>
@@ -10,7 +10,7 @@
 
   <div class="textField">
     <h3>Please Enter the Match score</h3>
-    <textarea class="input" matInput type="text" matInput (input)="onInputChangeResultField($event)"
+    <textarea class="input" matInput type="text" (input)="onInputChangeResultField($event)"
       placeholder="TeamNameA TeamNameB TeamAScore TeamBScore" row="9" multiline></textarea>
     <button class="button" mat-raised-button (click)="onClickResultBtn()">Enter</button>
   </div>

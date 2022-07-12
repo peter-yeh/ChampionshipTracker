@@ -123,6 +123,8 @@ def get_ranking():
     conn.close()
 
     # Extract this function into another class
+    # This function would be able to sort any number of groupings
+    # If there is 3 groups, this can still handle
 
     team_ranking = {}
 
@@ -159,9 +161,26 @@ def get_ranking():
 
         group_ranking[rank.groupNumber][team_name] = rank
 
+    # Basic test case
+    # rank1 = Ranking(2, 3, 4, '30/01', 1)
+    # rank6 = Ranking(2, 3, 5, '28/01', 1)
+    # rank2 = Ranking(2, 3, 5, '30/01', 1)
+    # rank7 = Ranking(2, 3, 5, '28/02', 1)
+    # rank3 = Ranking(2, 3, 5, '01/05', 1)
+    # rank5 = Ranking(2, 3, 5, '28/06', 1)
+    # rank4 = Ranking(2, 3, 5, '29/06', 1)
+    # group_ranking = {}
+    # group_ranking[1] = {'aa': rank1, 'bb': rank2, 'cc': rank3, 
+    # 'dd': rank4, 'ee': rank5, 'ff': rank6, 'gg': rank7}
+
+    result = {}
     for group_number, rank in group_ranking.items():
         # rank is a dictionary of the teams in this grouping
         # Sort each group by score, totalGoals, alternateMatchPoint, then reg date
-        print(rank)
+        temp = sorted(rank.items(), key=lambda team: 
+            (team[1].score, team[1].totalGoals, team[1].alternateMatchPoint, team[1].regDate[3:],
+            team[1].regDate ))
 
-    return jsonify(group_ranking), 200
+        result[group_number] = temp
+
+    return jsonify(result), 200
