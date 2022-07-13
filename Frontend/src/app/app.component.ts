@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ApiService} from 'src/model/api.service';
 import {GroupRank, MatchResult, TeamInfo} from 'src/model/model';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -9,43 +10,35 @@ import {GroupRank, MatchResult, TeamInfo} from 'src/model/model';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private toast: ToastrService) { }
 
   title: string = 'Frontend';
 
-  infoField: string = ``;
+  infoField: string = '';
   teamInfoSubs: Subscription = Subscription.EMPTY;
   teamInfoArr: TeamInfo[] = [];
 
-  resultField: string = ``;
+  resultField: string = '';
   matchResultSubs: Subscription = Subscription.EMPTY;
   matchResultArr: MatchResult[] = [];
 
   rankingSubs: Subscription = Subscription.EMPTY;
-  groupRankArr: GroupRank[] = [];
+  rankingArr: GroupRank[] = [];
 
   ngOnInit() {
     this.teamInfoSubs = this.apiService
         .getTeamInfo()
         .subscribe((res) => {
           this.castToTeamInfo(res);
-        },
-        console.error,
-        );
+          this.toast.success('Team Information Loaded');
+        } );
     this.matchResultSubs = this.apiService
         .getMatchResult()
         .subscribe((res) => {
           this.castToMatchResult(res);
-        },
-        console.error,
-        );
-    this.rankingSubs = this.apiService
-        .getRanking()
-        .subscribe((res) => {
-          this.castToGroupRank(res);
-        },
-        console.error,
-        );
+          this.toast.success('Match Result Loaded');
+          this.getRanking();
+        } );
   }
 
   ngOnDestroy() {
@@ -56,60 +49,78 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   changeInfoField(event: any) {
-    if (!(event.target.value as string)) {
-      // show toast message if no input
-      return;
-    }
+    if (!(event.target.value as string)) return;
     this.infoField = event.target.value as string;
   }
 
   onClickInfo() {
     if (!this.infoField) {
-      // can show toast message if no input
+      this.toast.error('Text Field Cannot Be Empty');
       return;
     }
     this.teamInfoSubs = this.apiService
         .addTeamInfo(this.infoField)
         .subscribe((res) => {
           this.castToTeamInfo(res);
+          this.getRanking();
+          this.toast.success('Team Information Saved');
         },
-        console.error,
+        (error) => {
+          this.toast.error('Information Not Saved: Input format error');
+        },
         );
-    window.location.reload();
-    // show toast message for success
   }
 
   changeResultField(event: any) {
-    if (!(event.target.value as string)) {
-      // show toast message if no input
-      return;
-    }
+    if (!(event.target.value as string)) return;
     this.resultField = event.target.value as string;
   }
 
   onClickResult() {
     if (!this.resultField) {
-      // can show toast message if no input
+      this.toast.error('Text Field Cannot Be Empty');
       return;
     }
     this.matchResultSubs = this.apiService
         .addMatchResult(this.resultField)
         .subscribe((res) => {
-          this.castToTeamInfo(res);
+          this.castToMatchResult(res);
+          this.getRanking();
+          this.toast.success('Match Results Saved');
         },
-        console.error,
+        (error) => {
+          this.toast.error('Results Not Saved: Input format error');
+        },
         );
-    window.location.reload();
-    // show toast message for success
   }
 
   onClickDeleteDb() {
     this.apiService.deleteAll()
-        .subscribe(() =>{
-          // Show toast message
+        .subscribe(() => {
+          this.teamInfoArr = [];
+          this.matchResultArr = [];
+          this.rankingArr = [];
+          this.toast.success('Database Cleared');
+        },
+        (error) => {
+          this.toast.error('Database Not Cleared');
         },
         );
-    window.location.reload();
+  }
+
+  getRanking() {
+    if (!this.matchResultArr.length || !this.teamInfoArr.length) return;
+
+    this.rankingSubs = this.apiService
+        .getRanking()
+        .subscribe((res) => {
+          this.castToGroupRank(res);
+          this.toast.success('Ranking Calculated');
+        },
+        (error) => {
+          this.toast.error('Error Calculating Ranking');
+        },
+        );
   }
 
   castToTeamInfo(anyArr: any[]) {
@@ -137,6 +148,6 @@ export class AppComponent implements OnInit, OnDestroy {
       const rank = new GroupRank(key, value);
       temp.push(rank);
     }
-    this.groupRankArr = temp;
+    this.rankingArr = temp;
   }
 }
