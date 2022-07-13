@@ -1,10 +1,51 @@
-.input {
-    height: 80%;
-    widows: 70%;
+.customGroup {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 9;
+    padding: 5px;
+}
+
+.customTable {
+    width: 100%;
+    margin: 5px;
+}
+
+caption {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: left;
+    color: #333;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: center;
+
+}
+
+.inputFieldGroup {
+    width: 80%;
+    flex-direction: column;
+    display: flex;
+    margin: 5px;
+    margin-top: 30px;
+
+}
+
+.textField {
+    height: 10rem;
+    width: auto;
+    resize: none;
 }
 
 .button {
-    height: 1rem;
-    width: 9rem;
-    padding: 1rem;
+    width: auto;
+    margin: 2rem;
+    text-align: center;
 }
