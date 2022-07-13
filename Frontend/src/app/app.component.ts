@@ -73,6 +73,7 @@ export class AppComponent implements OnInit, OnDestroy {
         .addTeamInfo(this.infoField)
         .subscribe((res) => {
           this.castToTeamInfo(res);
+          this.infoField = '';
         },
         console.error,
         );
@@ -96,14 +97,22 @@ export class AppComponent implements OnInit, OnDestroy {
         .addMatchResult(this.resultField)
         .subscribe((res) => {
           this.castToTeamInfo(res);
+          // this.resultField = '';
         },
         console.error,
         );
+    window.location.reload();
     // show toast message for success
   }
 
-  onClickClearDb() {
-
+  onClickDeleteDb() {
+    console.log('Delete all');
+    this.apiService.deleteAll()
+        .subscribe(() =>{
+          // Show toast message
+        },
+        );
+    window.location.reload();
   }
 
   castToTeamInfo(anyArr: any[]) {

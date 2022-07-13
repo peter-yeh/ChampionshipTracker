@@ -1,7 +1,7 @@
 <div>
 
   <div class="textField">
-  <button class="button" mat-raised-button (click)="onClickClearDb()">Clear Database</button>
+    <button class="button" mat-raised-button (click)="onClickDeleteDb()">Delete All</button>
     <h3>Please Enter the Team information</h3>
     <textarea class="input" matInput type="text" (input)="changeInfoField($event)"
       placeholder="TeamName RegistrationDate GroupNumber" row="9" multiline></textarea>
@@ -39,7 +39,7 @@
     <button class="button" mat-raised-button (click)="onClickResult()">Enter</button>
   </div>
 
-  <h4>Team Information</h4>
+  <h4>Match Score</h4>
   <table class="table">
     <thead>
       <tr>
@@ -64,8 +64,8 @@
   <h2>Ranking</h2>
   <div *ngFor="let group of groupRankArr">
     <h4>Group {{group.name}}</h4>
-    
-      <table class="table">
+
+    <table class="table">
       <thead>
         <tr>
           <th scope="col">Rank</th>
@@ -87,7 +87,7 @@
         </tr>
       </tbody>
     </table>
-  </div >
+  </div>
 
 
   <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">

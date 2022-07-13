@@ -107,6 +107,20 @@ def get_match_result():
 
     return jsonify(match_result_arr), 200
 
+@app.route('/delete/all')
+def drop_table():
+    """
+    Delete rows from both table
+    """
+    conn = get_db_connection()
+    temp = conn.execute('DELETE FROM teamInfo')
+    conn.execute('DELETE FROM matchResult')
+    print(temp)
+    conn.commit()
+    conn.close()
+
+    return jsonify("Delete all"), 200
+
 
 @app.route('/get/ranking')
 def get_ranking():
@@ -121,6 +135,9 @@ def get_ranking():
     db_result = conn.execute(
         'SELECT teamA, scoreA, teamB, scoreB FROM matchResult').fetchall()
     conn.close()
+
+    if len(db_team_info) <= 0 or len(db_result) <= 0:
+        return jsonify("Team info and match result cannot be empty"), 400
 
     # Extract this function into another class
     # This function would be able to sort any number of groupings

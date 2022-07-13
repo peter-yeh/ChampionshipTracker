@@ -28,4 +28,9 @@ export class ApiService {
   getRanking(): Observable<any[]> {
     return this.http.get<any[]>(`${API_URL}/get/ranking`);
   }
+
+  deleteAll() {
+    console.log('Running in service');
+    return this.http.get(`${API_URL}/delete/all`);
+  }
 }
