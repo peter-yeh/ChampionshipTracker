@@ -2,3 +2,9 @@
     height: 80%;
     widows: 70%;
 }
+
+.button {
+    height: 1rem;
+    width: 9rem;
+    padding: 1rem;
+}

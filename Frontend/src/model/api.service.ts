@@ -30,7 +30,6 @@ export class ApiService {
   }
 
   deleteAll() {
-    console.log('Running in service');
     return this.http.get(`${API_URL}/delete/all`);
   }
 }

@@ -43,7 +43,6 @@ export class AppComponent implements OnInit, OnDestroy {
         .getRanking()
         .subscribe((res) => {
           this.castToGroupRank(res);
-          console.log(this.groupRankArr);
         },
         console.error,
         );
@@ -73,10 +72,10 @@ export class AppComponent implements OnInit, OnDestroy {
         .addTeamInfo(this.infoField)
         .subscribe((res) => {
           this.castToTeamInfo(res);
-          this.infoField = '';
         },
         console.error,
         );
+    window.location.reload();
     // show toast message for success
   }
 
@@ -97,7 +96,6 @@ export class AppComponent implements OnInit, OnDestroy {
         .addMatchResult(this.resultField)
         .subscribe((res) => {
           this.castToTeamInfo(res);
-          // this.resultField = '';
         },
         console.error,
         );
@@ -106,7 +104,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onClickDeleteDb() {
-    console.log('Delete all');
     this.apiService.deleteAll()
         .subscribe(() =>{
           // Show toast message
