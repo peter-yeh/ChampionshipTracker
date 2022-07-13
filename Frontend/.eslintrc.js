@@ -22,4 +22,5 @@ module.exports = {
       ignoreUrls: true,
     }],
   },
+  'eslint linebreak-style': ["error", "windows"],
 };
