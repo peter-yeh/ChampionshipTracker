@@ -52,7 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           this.updateTeamInfo();
           this.toast.success('Team Information Saved');
-          this.updateRanking();
         },
         (err) => {
           this.toast.error('Failed: ' + err.error);
@@ -102,6 +101,7 @@ export class AppComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           this.castToTeamInfo(res);
           this.toast.success('Team Information Loaded');
+          this.updateRanking();
         } );
   }
 
