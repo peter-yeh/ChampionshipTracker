@@ -32,13 +32,17 @@ ng serve // Goto http://localhost:4200/
 ```
 
 ## Deployment
-```
-heroku create # Create a new heroku
-# Add database.db into git
-# Update Frontend/env.ts with the new link
-# ng build
-# Move dist/frontend content index.html into /templates and the rest into static folder
-# Rename all src and href in index.html to ../static/
+1. Create heroku instance
+`heroku create`
+
+2. Update `Frontend/env.ts` to use the new link
+
+3. `ng build`
+- Move dist/Frontend `index.html` into `/templates` and the rest into `/static`
+- Rename all src and href in `index.html` to `../static`
+
+4. Commit and push the changes to heroku
 git subtree push --prefix Backend/ heroku main
+
+5. Use dyno
 heroku ps:scale web=1
-```
