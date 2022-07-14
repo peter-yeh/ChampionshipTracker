@@ -2,7 +2,7 @@ import json
 import sqlite3
 from tokenize import group
 from helper import MatchResult, TeamInfo, Ranking, parse_match_result, parse_team_info, team_won, team_lose, team_draw
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 
 
@@ -16,6 +16,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '62e8f6980b724f83f2bb4a'
 CORS(app)
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+if __name__=="__main__":
+    app.run()
 
 @app.route('/add/teamInfo', methods=['POST'])
 def add_team_info():

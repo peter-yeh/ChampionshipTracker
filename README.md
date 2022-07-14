@@ -30,3 +30,15 @@ pip freeze > requirements.txt
 npm install
 ng serve // Goto http://localhost:4200/
 ```
+
+## Deployment
+```
+heroku create # Create a new heroku
+# Add database.db into git
+# Update Frontend/env.ts with the new link
+# ng build
+# Move dist/frontend content index.html into /templates and the rest into static folder
+# Rename all src and href in index.html to ../static/
+git subtree push --prefix Backend/ heroku main
+heroku ps:scale web=1
+```
