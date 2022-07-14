@@ -26,19 +26,8 @@ export class AppComponent implements OnInit, OnDestroy {
   rankingArr: GroupRank[] = [];
 
   ngOnInit() {
-    this.teamInfoSubs = this.apiService
-        .getTeamInfo()
-        .subscribe((res) => {
-          this.castToTeamInfo(res);
-          this.toast.success('Team Information Loaded');
-        } );
-    this.matchResultSubs = this.apiService
-        .getMatchResult()
-        .subscribe((res) => {
-          this.castToMatchResult(res);
-          this.toast.success('Match Result Loaded');
-          this.getRanking();
-        } );
+    this.updateTeamInfo();
+    this.updateMatchResult();
   }
 
   ngOnDestroy() {
@@ -61,12 +50,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.teamInfoSubs = this.apiService
         .addTeamInfo(this.infoField)
         .subscribe((res) => {
-          this.castToTeamInfo(res);
-          this.getRanking();
+          this.updateTeamInfo();
           this.toast.success('Team Information Saved');
+          this.updateRanking();
         },
-        (error) => {
-          this.toast.error('Information Not Saved: Input format error');
+        (err) => {
+          this.toast.error('Failed: ' + err.error);
         },
         );
   }
@@ -84,12 +73,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.matchResultSubs = this.apiService
         .addMatchResult(this.resultField)
         .subscribe((res) => {
-          this.castToMatchResult(res);
-          this.getRanking();
           this.toast.success('Match Results Saved');
+          this.updateMatchResult();
         },
-        (error) => {
-          this.toast.error('Results Not Saved: Input format error');
+        (err) => {
+          this.toast.error('Failed: ' + err.error);
         },
         );
   }
@@ -108,7 +96,26 @@ export class AppComponent implements OnInit, OnDestroy {
         );
   }
 
-  getRanking() {
+  updateTeamInfo() {
+    this.teamInfoSubs = this.apiService
+        .getTeamInfo()
+        .subscribe((res) => {
+          this.castToTeamInfo(res);
+          this.toast.success('Team Information Loaded');
+        } );
+  }
+
+  updateMatchResult() {
+    this.matchResultSubs = this.apiService
+        .getMatchResult()
+        .subscribe((res) => {
+          this.castToMatchResult(res);
+          this.toast.success('Match Result Loaded');
+          this.updateRanking();
+        } );
+  }
+
+  updateRanking() {
     if (!this.matchResultArr.length || !this.teamInfoArr.length) return;
 
     this.rankingSubs = this.apiService

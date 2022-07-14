@@ -1,5 +1,27 @@
 # Championship Tracker
 
+## Key design conideration
+- This application is developed within a week, with the main focus on code maintainability and user experience (in terms of the inputting and error)
+- This is deployed on heroku https://joli-maison-71130.herokuapp.com/
+
+## Assumptions
+- The user is expected to know what they are doing, the algorithm do not enforce 2 groups of 6 team each. This would allow for flexible groups and teams should the participation rate change, allowing for the app to be reused.
+- The groupings and team matchup and assumed to be well planned and correct such that all teams plays the same number of matches.
+
+## Features
+- Handle multiple line input field and throw error when the format is wrong
+- Allows for inputting of team information and match result and the calculating of ranking in each groupings
+- Clearing of database
+- Data entered is stored in a database and persists through reboot
+- App is deployed on Heroku
+
+## Installation
+| | Version |
+| --- | --- |
+| Python | 3.10.5 |
+| NodeJs | 16.16.0 |
+| NPM | 8.11.0 |
+
 ## Backend
 Run on initialization
 ```
