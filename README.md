@@ -1,6 +1,6 @@
 # Championship Tracker
 
-## Key design conideration
+## Key design consideration
 - This application is developed within a week, with the main focus on code maintainability and user experience (in terms of the inputting and error)
 - This is deployed on heroku https://joli-maison-71130.herokuapp.com/
 
