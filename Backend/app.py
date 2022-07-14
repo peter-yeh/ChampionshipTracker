@@ -33,12 +33,33 @@ def add_team_info():
         return jsonify('No valid input exist'), 400
 
     for row in parsed_input:
-        if len(row[1]) != 5:
-            return jsonify('Registration date for ', row[0], ' is wrong: ', row[1]), 400
+        # Check for format, if error, request user to update again
+        # Do you know what you are doing?
+        # If users know what they are doing, there should not be a single mistake
+        if len(row[1]) != 5 or row[1][2] != '/':
+            conn.close()
+            return jsonify('Registration date for team: ' + row[0]
+                           + ' (' + row[1] + ') is not of the format DD/MM'), 400
 
-        conn.execute(
-            'INSERT INTO teamInfo (teamName, registrationDate, groupNumber) VALUES(?, ?, ?)',
-            (row[0], row[1], row[2]))
+        # Check if valid date
+        if not row[1][0:2].isdigit() or not 0 < int(row[1][0:2]) < 32:
+            conn.close()
+            return jsonify('Registration date for team: ' + row[0]
+                           + ' (' + row[1] + ') is not a valid date'), 400
+
+        # Check if valid month
+        if not row[1][3:].isdigit() or not 0 < int(row[1][3:]) < 13:
+            conn.close()
+            return jsonify('Registration month for team: ' + row[0]
+                           + ' (' + row[1] + ') is not a valid month'), 400
+
+        try:
+            conn.execute(
+                'INSERT INTO teamInfo (teamName, registrationDate, groupNumber) VALUES(?, ?, ?)',
+                (row[0], row[1], row[2]))
+        except:
+            conn.close()
+            return jsonify('Entry already existed in database: ', row), 400
 
     conn.commit()
     conn.close()
@@ -61,9 +82,22 @@ def add_team_score():
         return jsonify('No valid input exist'), 400
 
     for row in parsed_input:
-        conn.execute(
-            'INSERT INTO matchResult (teamA, scoreA, teamB, scoreB) VALUES(?, ?, ?, ?)',
-            (row[0], row[1], row[2], row[3]))
+        # Check if score is a number
+        if not int(row[1]):
+            conn.close()
+            return jsonify('Team: ' + row[0] + ' score is not a number: ' + row[1]), 400
+
+        if not int(row[3]):
+            conn.close()
+            return jsonify('Team: ' + row[2] + ' score is not a number: ' + row[3]), 400
+
+        try:
+            conn.execute(
+                'INSERT INTO matchResult (teamA, scoreA, teamB, scoreB) VALUES(?, ?, ?, ?)',
+                (row[0], row[1], row[2], row[3]))
+        except:
+            conn.close()
+            return jsonify('Entry already existed in database: ', row), 400
 
     conn.commit()
     conn.close()
@@ -106,6 +140,7 @@ def get_match_result():
         match_result_arr.append(match_result)
 
     return jsonify(match_result_arr), 200
+
 
 @app.route('/delete/all')
 def drop_table():
@@ -187,16 +222,16 @@ def get_ranking():
     # rank5 = Ranking(2, 3, 5, '28/06', 1)
     # rank4 = Ranking(2, 3, 5, '29/06', 1)
     # group_ranking = {}
-    # group_ranking[1] = {'aa': rank1, 'bb': rank2, 'cc': rank3, 
+    # group_ranking[1] = {'aa': rank1, 'bb': rank2, 'cc': rank3,
     # 'dd': rank4, 'ee': rank5, 'ff': rank6, 'gg': rank7}
 
     result = {}
     for group_number, rank in group_ranking.items():
         # rank is a dictionary of the teams in this grouping
         # Sort each group by score, totalGoals, alternateMatchPoint, then reg date
-        temp = sorted(rank.items(), key=lambda team: 
-            (team[1].score, team[1].totalGoals, team[1].alternateMatchPoint, team[1].regDate[3:],
-            team[1].regDate ))
+        temp = sorted(rank.items(), key=lambda team:
+                      (team[1].score, team[1].totalGoals, team[1].alternateMatchPoint, team[1].regDate[3:],
+                       team[1].regDate))
 
         result[group_number] = temp
 
