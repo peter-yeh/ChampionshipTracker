@@ -19,9 +19,12 @@ def parse_match_result(user_input):
 
     for line in split_by_next_line:
         split_by_space = line.split()
-        # Skip lines if line does not contain 4 param
+        # Fail this input block on error and show the error line
         if len(split_by_space) != 4:
-            continue
+            if len(match_result_arr) > 0:
+                return 'Format error after ' + match_result_arr[-1][0]
+            else:
+                return 'Format error in first line'
 
         match_result = MatchResult(
             split_by_space[0], split_by_space[2], split_by_space[1], split_by_space[3])

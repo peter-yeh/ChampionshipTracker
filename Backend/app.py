@@ -30,8 +30,8 @@ def add_team_info():
         return jsonify('Input is empty'), 400
 
     parsed_input = parse_team_info(user_input)
-    if len(parsed_input) <= 0:
-        return jsonify('No valid input exist'), 400
+    if isinstance(parsed_input, str):
+        return jsonify(parsed_input), 400
 
     for row in parsed_input:
         # Check for format, if error, request user to update again
@@ -77,8 +77,8 @@ def add_team_score():
         return jsonify('Input is empty'), 400
 
     parsed_input = parse_match_result(user_input)
-    if len(parsed_input) <= 0:
-        return jsonify('No valid input exist'), 400
+    if isinstance(parsed_input, str):
+        return jsonify(parsed_input), 400
 
     for row in parsed_input:
         # Check if score is a number
