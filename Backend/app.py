@@ -88,18 +88,18 @@ def add_team_score():
 
     for row in parsed_input:
         # Check if score is a number
-        if int(row[1]) < 0:
+        if not row.scoreA.isnumeric() or int(row.scoreA) < 0:
             conn.close()
-            return jsonify('Team: ' + row[0] + ' score is not a number: ' + row[1]), 400
+            return jsonify('Team: ' + row.teamA + ' score is not a number: ' + row.scoreA), 400
 
-        if int(row[3]) < 0:
+        if not row.scoreB.isnumeric() or int(row.scoreB) < 0:
             conn.close()
-            return jsonify('Team: ' + row[2] + ' score is not a number: ' + row[3]), 400
+            return jsonify('Team: ' + row.teamB + ' score is not a number: ' + row.scoreB), 400
 
         try:
             conn.execute(
                 'INSERT INTO matchResult (teamA, scoreA, teamB, scoreB) VALUES(?, ?, ?, ?)',
-                (row[0], row[1], row[2], row[3]))
+                (row.teamA, row.scoreA, row.teamB, row.scoreB))
         except:
             conn.close()
             return jsonify('Entry already existed in database: ', row), 400
