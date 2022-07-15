@@ -18,9 +18,12 @@ def parse_team_info(user_input):
 
     for line in split_by_next_line:
         split_by_space = line.split()
-        # Skip lines if line does not contain 3 param
+        # Fail this input block on error show the error line
         if len(split_by_space) != 3:
-            continue
+            if len(team_info_arr) > 0:
+                return 'Format error after ' + team_info_arr[-1][0]
+            else:
+                return 'Format error in first line'
 
         team_info = TeamInfo(
             split_by_space[0], split_by_space[1], split_by_space[2])
