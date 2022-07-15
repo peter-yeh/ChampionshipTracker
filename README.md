@@ -64,7 +64,7 @@ ng serve // Goto http://localhost:4200/
 - Rename all src and href in `index.html` to `../static`
 
 4. Commit and push the changes to heroku
-git subtree push --prefix Backend/ heroku main
+`git subtree push --prefix Backend/ heroku main`
 
 5. Use dyno
-heroku ps:scale web=1
+`heroku ps:scale web=1`
